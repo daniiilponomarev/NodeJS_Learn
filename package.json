@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/daniiilponomarev/NodeJS_Learn/issues"
   },
-  "homepage": "https://github.com/daniiilponomarev/NodeJS_Learn#readme"
+  "homepage": "https://github.com/daniiilponomarev/NodeJS_Learn#readme",
+  "dependencies": {
+    "prettier": "^2.0.5"
+  }
 }
