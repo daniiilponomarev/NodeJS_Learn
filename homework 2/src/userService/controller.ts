@@ -1,10 +1,10 @@
-import { User } from './types';
+import { User, UserRequestType } from './types';
 import { users } from './data';
 
 export const getUser = async (id: string): Promise<User | undefined> =>
   users.find((user: User) => user.id === id && !user.isDeleted);
 
-export const createUser = async (newUser: User): Promise<User> => {
+export const createUser = async (newUser: UserRequestType): Promise<User> => {
   if (users.some((user: User): boolean => user.login === newUser.login)) {
     return Promise.reject('Duplicated login');
   }
@@ -19,7 +19,10 @@ export const createUser = async (newUser: User): Promise<User> => {
   return Promise.resolve(newUserWithId);
 };
 
-export const updateUser = async (login: string, user: User): Promise<User> => {
+export const updateUser = async (
+  login: string,
+  user: UserRequestType
+): Promise<User> => {
   const userForUpdate = users.find(
     (savedUser: User) => savedUser.login === login
   );

@@ -1,7 +1,12 @@
 import express, { Router, Request, Response } from 'express';
+import { ValidatedRequest, createValidator } from 'express-joi-validation';
 import 'joi-extract-type';
 import asyncHandler from 'express-async-handler';
-import { User } from './types';
+import {
+  userCreateUpdateRequestSchema,
+  userCreateUpdateSchema,
+} from './schemas';
+import { UserRequestType } from './types';
 import {
   createUser,
   deleteUser,
@@ -11,6 +16,7 @@ import {
 } from './controller';
 
 const router: Router = express.Router();
+const validator = createValidator();
 
 router.get(
   '/:id',
@@ -23,22 +29,34 @@ router.get(
 
 router.post(
   '/create',
-  asyncHandler(async (req: Request, res: Response) => {
-    const newUser: User = req.body;
-    const createdUser = await createUser(newUser);
+  validator.body(userCreateUpdateSchema),
+  asyncHandler(
+    async (
+      req: ValidatedRequest<userCreateUpdateRequestSchema>,
+      res: Response
+    ) => {
+      const newUser: UserRequestType = req.body;
+      const createdUser = await createUser(newUser);
 
-    res.json(createdUser);
-  })
+      res.json(createdUser);
+    }
+  )
 );
 
 router.put(
   '/update/:login',
-  asyncHandler(async (req: Request, res: Response) => {
-    const user: User = req.body;
-    const updatedUser = await updateUser(req.params.login, user);
+  validator.body(userCreateUpdateSchema),
+  asyncHandler(
+    async (
+      req: ValidatedRequest<userCreateUpdateRequestSchema>,
+      res: Response
+    ) => {
+      const user: UserRequestType = req.body;
+      const updatedUser = await updateUser(req.params.login, user);
 
-    res.json(updatedUser);
-  })
+      res.json(updatedUser);
+    }
+  )
 );
 
 router.get(
