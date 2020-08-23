@@ -9,6 +9,12 @@ app.listen(PORT, () => console.log('App is running'));
 
 app.use(express.json());
 
+app.get('/', (req: Request, res: Response) => {
+  console.log(req.params, req.query, req.body);
+
+  res.json({ a: 1, b: 2 });
+});
+
 app.use('/users', router);
 
 app.use((err: any, req: Request, res: Response) => {
