@@ -4,8 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node_modules/.bin/tsc -p .",
-    "prestart": "npm run build",
     "start": "node dst/app.js",
     "task2js": "npm start && homework 2/node_modules/.bin/nodemon dst/app.js",
     "task2ts": "homework 2/node_modules/.bin/nodemon src/app.ts"
