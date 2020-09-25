@@ -12,7 +12,7 @@ import {
 } from '../data-access/user-dal';
 
 export const getUser = async (id: string): Promise<UserDomain | null> => {
-  return await getUserDataById(id);
+  return getUserDataById(id);
 };
 
 export const createUser = async (
@@ -21,7 +21,7 @@ export const createUser = async (
   const existedUser = await getUserDataByLogin(newUser.login);
 
   if (existedUser) {
-    return Promise.reject('Duplicated login');
+    throw Error('Duplicated login')
   }
 
   const newUserWithId = {
@@ -29,7 +29,7 @@ export const createUser = async (
     isDeleted: false,
   };
 
-  return await createUserData(newUserWithId);
+  return createUserData(newUserWithId);
 };
 
 export const updateUser = async (
@@ -39,12 +39,12 @@ export const updateUser = async (
   const userForUpdate = await getUserDataByLogin(login);
 
   if (!userForUpdate) {
-    return Promise.reject('Undefined user');
+    throw Error('Undefined user');
   }
 
   const existedUser = await getUserDataByLogin(user.login);
   if (existedUser) {
-    return Promise.reject('This login already exists');
+    throw Error('This login already exists');
   }
 
   const updatedUser = {
@@ -53,21 +53,21 @@ export const updateUser = async (
     ...user,
   };
 
-  return await updateUserData(userForUpdate, updatedUser);
+  return updateUserData(userForUpdate, updatedUser);
 };
 
 export const getAutoSuggestUsers = async (
   loginSubstring: any = '',
   limit: any = 10
 ): Promise<UserDomain[]> => {
-  return await getAutoSuggestUsersData(loginSubstring, limit);
+  return getAutoSuggestUsersData(loginSubstring, limit);
 };
 
 export const deleteUser = async (id: string): Promise<UserDomain | null> => {
   const userForDelete = await deleteUserData(id);
 
   if (!userForDelete) {
-    return Promise.reject('Undefined user');
+    throw Error('Undefined user');
   }
 
   return userForDelete;

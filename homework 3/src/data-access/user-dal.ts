@@ -9,7 +9,7 @@ import { User } from './user-definition';
 export const getUserDataByLogin = async (
   login: string
 ): Promise<UserDomain | null> => {
-  return await User.findOne({
+  return User.findOne({
     where: {
       login: {
         [Op.eq]: login,
@@ -23,7 +23,7 @@ export const getUserDataByLogin = async (
 export const getUserDataById = async (
   id: string
 ): Promise<UserDomain | null> => {
-  return await User.findOne({
+  return User.findOne({
     where: {
       id: {
         [Op.eq]: id,
@@ -37,21 +37,21 @@ export const getUserDataById = async (
 export const createUserData = async (
   newUser: UserCreationRequestDTO
 ): Promise<UserDomain> => {
-  return await User.create(newUser);
+  return User.create(newUser);
 };
 
 export const updateUserData = async (
   userForUpdate: UserDomain,
   updatedUser: UserType
 ): Promise<UserDomain> => {
-  return await userForUpdate.update(updatedUser);
+  return userForUpdate.update(updatedUser);
 };
 
 export const getAutoSuggestUsersData = async (
   loginSubstring: any = '',
   limit: any = 10
 ): Promise<UserDomain[]> => {
-  return await User.findAll({
+  return User.findAll({
     where: {
       login: {
         [Op.like]: `%${loginSubstring}%`,

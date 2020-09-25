@@ -44,7 +44,7 @@ userRouter.post(
 
         res.json(userDTO);
       } catch (error) {
-        res.status(409).json(error);
+        res.status(409).json(error.toString());
       }
     }
   )
@@ -65,7 +65,7 @@ userRouter.put(
 
         res.json(userDTO);
       } catch (error) {
-        res.status(409).json(error);
+        res.status(409).json(error.toString());
       }
     }
   )
@@ -92,7 +92,7 @@ userRouter.delete(
 
       res.json(userDTO);
     } catch (error) {
-      res.status(404).json(error);
+      res.status(404).json(error.toString());
     }
   })
 );
