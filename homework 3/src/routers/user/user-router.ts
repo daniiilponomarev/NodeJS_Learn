@@ -15,6 +15,7 @@ import {
   updateUser,
 } from '../../services/user-service';
 import { UserMapper } from './user-mapper';
+import {CONFLICT, NOT_FOUND} from "../../constants/statuses";
 
 const userRouter: Router = express.Router();
 const validator = createValidator();
@@ -44,7 +45,7 @@ userRouter.post(
 
         res.json(userDTO);
       } catch (error) {
-        res.status(409).json(error.toString());
+        res.status(CONFLICT).json(error.toString());
       }
     }
   )
@@ -65,7 +66,7 @@ userRouter.put(
 
         res.json(userDTO);
       } catch (error) {
-        res.status(409).json(error.toString());
+        res.status(CONFLICT).json(error.toString());
       }
     }
   )
@@ -92,7 +93,7 @@ userRouter.delete(
 
       res.json(userDTO);
     } catch (error) {
-      res.status(404).json(error.toString());
+      res.status(NOT_FOUND).json(error.toString());
     }
   })
 );
