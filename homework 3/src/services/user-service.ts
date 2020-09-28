@@ -9,7 +9,7 @@ import {
   getUserDataById,
   getUserDataByLogin,
   updateUserData,
-} from '../data-access/user-dal';
+} from '../data-access/user/user-dal';
 
 export const getUser = async (id: string): Promise<UserDomain | null> => {
   return getUserDataById(id);

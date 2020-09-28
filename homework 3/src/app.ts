@@ -1,7 +1,7 @@
 import express, { Application, Request, Response } from 'express';
-import userRouter from './routers/user-router';
+import userRouter from './routers/user/user-router';
 import { sequelize } from './data-access/connection';
-import { User } from './data-access/user-definition';
+import { User } from './data-access/user/user-definition';
 import { init } from './init/init';
 
 const app: Application = express();
@@ -26,7 +26,7 @@ app.use((err: any, req: Request, res: Response) => {
 sequelize
   .authenticate()
   .then(async () => {
-    // await init(); // for first initialization
+    await init(); // for first initialization
     // await User.sync();
     // User.findAll({ limit: 10 }).then((users) => {
     //   console.log(users);

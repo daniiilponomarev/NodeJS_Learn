@@ -3,7 +3,7 @@ import {
   UserCreationRequestDTO,
   UserDomain,
   UserType,
-} from '../models/user-model';
+} from '../../models/user-model';
 import { User } from './user-definition';
 
 export const getUserDataByLogin = async (

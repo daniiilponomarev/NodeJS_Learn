@@ -6,14 +6,14 @@ import {
   userCreateUpdateRequestSchema,
   userCreateUpdateSchema,
 } from './user-schemas';
-import { UserCreationRequestDTO } from '../models/user-model';
+import { UserCreationRequestDTO } from '../../models/user-model';
 import {
   createUser,
   deleteUser,
   getAutoSuggestUsers,
   getUser,
   updateUser,
-} from '../services/user-service';
+} from '../../services/user-service';
 import { UserMapper } from './user-mapper';
 
 const userRouter: Router = express.Router();
