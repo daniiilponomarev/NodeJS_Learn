@@ -28,7 +28,7 @@ app.use((err: any, req: Request, res: Response) => {
 sequelize
   .authenticate()
   .then(async () => {
-    // await init(); // for first initialization
+    await init(); // for first initialization
 
     app.listen(PORT, () =>
       console.log(

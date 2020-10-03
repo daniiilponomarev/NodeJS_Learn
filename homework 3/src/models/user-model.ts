@@ -20,6 +20,10 @@ export type UserCreationRequestDTO = {
   age: number;
 };
 
+export type UsersAddToGroupRequestDTO = {
+  userIds: string[];
+};
+
 export interface UserCreationAttributes extends Optional<UserType, 'id'> {}
 
 export type UserDomain = Model<UserType, UserCreationAttributes>;

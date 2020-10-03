@@ -1,14 +1,14 @@
 import { GroupDomain, GroupTypeDTO } from '../../models/group-model';
 
 export class GroupMapper {
-  static mapGroupToDTO(user?: GroupDomain | null): GroupTypeDTO | null {
-    if (!user) {
+  static mapGroupToDTO(group?: GroupDomain | null): GroupTypeDTO | null {
+    if (!group) {
       return null;
     }
     return {
-      id: user.getDataValue('id') || '',
-      name: user.getDataValue('name'),
-      permissions: user.getDataValue('permissions'),
+      id: group.getDataValue('id') || '',
+      name: group.getDataValue('name'),
+      permissions: group.getDataValue('permissions'),
     };
   }
 }

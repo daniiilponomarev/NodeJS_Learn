@@ -5,9 +5,15 @@ import asyncHandler from 'express-async-handler';
 import {
   userCreateUpdateRequestSchema,
   userCreateUpdateSchema,
+  usersAddToGroupRequestSchema,
+  usersAddToGroupSchema,
 } from './user-schemas';
-import { UserCreationRequestDTO } from '../../models/user-model';
 import {
+  UserCreationRequestDTO,
+  UsersAddToGroupRequestDTO,
+} from '../../models/user-model';
+import {
+  addUsersToGroup,
   createUser,
   deleteUser,
   getAutoSuggestUsers,
@@ -15,7 +21,7 @@ import {
   updateUser,
 } from '../../services/user-service';
 import { UserMapper } from './user-mapper';
-import {CONFLICT, NOT_FOUND} from "../../constants/statuses";
+import { CONFLICT, NOT_FOUND, OK } from '../../constants/statuses';
 
 const userRouter: Router = express.Router();
 const validator = createValidator();
@@ -96,6 +102,26 @@ userRouter.delete(
       res.status(NOT_FOUND).json(error.toString());
     }
   })
+);
+
+userRouter.put(
+  '/addToGroup/:groupId',
+  validator.body(usersAddToGroupSchema),
+  asyncHandler(
+    async (
+      req: ValidatedRequest<usersAddToGroupRequestSchema>,
+      res: Response
+    ) => {
+      try {
+        const addToGroupDTO: UsersAddToGroupRequestDTO = req.body;
+        await addUsersToGroup(req.params.groupId, addToGroupDTO.userIds);
+
+        res.status(OK).send('Done');
+      } catch (error) {
+        res.status(NOT_FOUND).json(error.toString());
+      }
+    }
+  )
 );
 
 export default userRouter;

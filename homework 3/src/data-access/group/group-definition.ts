@@ -27,5 +27,6 @@ export const Group = sequelize.define(
   },
   {
     freezeTableName: true,
+    timestamps: false,
   }
 );

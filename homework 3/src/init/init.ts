@@ -1,8 +1,8 @@
-import { sequelize } from '../data-access/connection';
 import { User } from '../data-access/user/user-definition';
+import { Group } from '../data-access/group/group-definition';
+import { UserGroup } from '../data-access/user-group/user-group-definition';
 import { UserType } from '../models/user-model';
 import { DELETE, GroupType, READ, SHARE, WRITE } from '../models/group-model';
-import {Group} from "../data-access/group/group-definition";
 
 export const usersData: UserType[] = [
   {
@@ -41,28 +41,35 @@ export const groupsData: GroupType[] = [
 ];
 
 const initUsers = async () => {
-  await sequelize.authenticate();
   await User.sync({ force: true });
   await User.bulkCreate(usersData);
 };
 
 const initGroups = async () => {
-  await sequelize.authenticate();
   await Group.sync({ force: true });
   await Group.bulkCreate(groupsData);
 };
 
-export const init = () => {
-  return Promise.all([
-    initUsers()
-      .then(() => {
-        console.log('Users table has been initialized');
-      })
-      .catch((err) => console.log(err)),
-    initGroups()
-      .then(() => {
-        console.log('Groups table has been initialized');
-      })
-      .catch((err) => console.log(err)),
-  ]);
+const initUserGroups = async () => {
+  await UserGroup.sync({ force: true });
+};
+
+export const init = async () => {
+  await initUsers()
+    .then(() => {
+      console.log('Users table has been initialized');
+    })
+    .catch((err) => console.log(err));
+
+  await initGroups()
+    .then(() => {
+      console.log('Groups table has been initialized');
+    })
+    .catch((err) => console.log(err));
+
+  await initUserGroups()
+    .then(() => {
+      console.log('UserGroup table has been initialized');
+    })
+    .catch((err) => console.log(err));
 };

@@ -42,5 +42,6 @@ export const User = sequelize.define(
   },
   {
     freezeTableName: true,
+    timestamps: false,
   }
 );

@@ -1,15 +1,15 @@
+import { UserCreationRequestDTO, UserDomain } from '../models/user-model';
 import {
-  UserCreationRequestDTO,
-  UserDomain,
-} from '../models/user-model';
-import {
+  addUsersToGroupData,
   createUserData,
   deleteUserData,
   getAutoSuggestUsersData,
   getUserDataById,
   getUserDataByLogin,
+  getUsersDataByIds,
   updateUserData,
 } from '../data-access/user/user-dal';
+import { getGroupDataById } from '../data-access/group/group-dal';
 
 export const getUser = async (id: string): Promise<UserDomain | null> => {
   return getUserDataById(id);
@@ -21,7 +21,7 @@ export const createUser = async (
   const existedUser = await getUserDataByLogin(newUser.login);
 
   if (existedUser) {
-    throw Error('Duplicated login')
+    throw Error('Duplicated login');
   }
 
   const newUserWithId = {
@@ -71,4 +71,22 @@ export const deleteUser = async (id: string): Promise<UserDomain | null> => {
   }
 
   return userForDelete;
+};
+
+export const addUsersToGroup = async (
+  groupId: string,
+  userIds: string[]
+): Promise<any> => {
+  const { rows, count } = await getUsersDataByIds(userIds);
+
+  if (count !== userIds.length) {
+    throw Error('Some of users do not exist');
+  }
+
+  const existedGroup = await getGroupDataById(groupId);
+  if (!existedGroup) {
+    throw Error(`Group ${groupId} does not exists`);
+  }
+
+  await addUsersToGroupData(groupId, userIds, existedGroup);
 };
