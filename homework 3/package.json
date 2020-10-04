@@ -7,8 +7,8 @@
     "build": "tsc -p .",
     "prestart": "npm run build",
     "start": "node dst/app.js",
-    "task3js": "npm start && nodemon dst/app.js",
-    "task3ts": "nodemon src/app.ts"
+    "task4js": "npm start && nodemon dst/app.js",
+    "task4ts": "nodemon src/app.ts"
   },
   "repository": {
     "type": "git",
