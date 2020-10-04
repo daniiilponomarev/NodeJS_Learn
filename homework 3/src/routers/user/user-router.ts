@@ -22,6 +22,7 @@ import {
 } from '../../services/user-service';
 import { UserMapper } from './user-mapper';
 import { CONFLICT, NOT_FOUND, OK } from '../../constants/statuses';
+import { logger } from '../../logger/logger';
 
 const userRouter: Router = express.Router();
 const validator = createValidator();
@@ -51,6 +52,11 @@ userRouter.post(
 
         res.json(userDTO);
       } catch (error) {
+        logger.error({
+          message: error.toString(),
+          method: 'createUser',
+          body: JSON.stringify(req.body),
+        });
         res.status(CONFLICT).json(error.toString());
       }
     }
@@ -72,6 +78,12 @@ userRouter.put(
 
         res.json(userDTO);
       } catch (error) {
+        logger.error({
+          message: error.toString(),
+          method: 'updateUser',
+          params: JSON.stringify(req.params),
+          body: JSON.stringify(req.body),
+        });
         res.status(CONFLICT).json(error.toString());
       }
     }
@@ -99,6 +111,11 @@ userRouter.delete(
 
       res.json(userDTO);
     } catch (error) {
+      logger.error({
+        message: error.toString(),
+        method: 'deleteUser',
+        params: JSON.stringify(req.params),
+      });
       res.status(NOT_FOUND).json(error.toString());
     }
   })
@@ -118,6 +135,12 @@ userRouter.put(
 
         res.status(OK).send('Done');
       } catch (error) {
+        logger.error({
+          message: error.toString(),
+          method: 'addUsersToGroup',
+          params: JSON.stringify(req.params),
+          body: JSON.stringify(req.body),
+        });
         res.status(NOT_FOUND).json(error.toString());
       }
     }

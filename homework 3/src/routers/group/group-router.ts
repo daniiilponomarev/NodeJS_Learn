@@ -16,6 +16,7 @@ import {
 import { GroupMapper } from './group-mapper';
 import { GroupCreationRequestDTO } from '../../models/group-model';
 import { CONFLICT, NOT_FOUND } from '../../constants/statuses';
+import { logger } from '../../logger/logger';
 
 const groupRouter: Router = express.Router();
 const validator = createValidator();
@@ -61,6 +62,11 @@ groupRouter.post(
 
         res.json(groupDTO);
       } catch (error) {
+        logger.error({
+          message: error.toString(),
+          method: 'createGroup',
+          body: JSON.stringify(req.body),
+        });
         res.status(CONFLICT).json(error.toString());
       }
     }
@@ -82,6 +88,12 @@ groupRouter.put(
 
         res.json(groupDTO);
       } catch (error) {
+        logger.error({
+          message: error.toString(),
+          method: 'updateGroup',
+          params: JSON.stringify(req.params),
+          body: JSON.stringify(req.body),
+        });
         res.status(CONFLICT).json(error.toString());
       }
     }
@@ -97,6 +109,11 @@ groupRouter.delete(
 
       res.json(groupDTO);
     } catch (error) {
+      logger.error({
+        message: error.toString(),
+        method: 'deleteGroup',
+        params: JSON.stringify(req.params),
+      });
       res.status(NOT_FOUND).json(error.toString());
     }
   })

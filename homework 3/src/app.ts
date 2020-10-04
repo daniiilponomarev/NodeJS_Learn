@@ -3,13 +3,16 @@ import groupRouter from './routers/group/group-router';
 import userRouter from './routers/user/user-router';
 import { sequelize } from './data-access/connection';
 import { init } from './init/init';
-import { customLogger } from './logger/logger';
+import {
+  customLoggerMiddleware,
+  winstonErrorLoggerMiddleware,
+} from './logger/logger';
 
 const app: Application = express();
 
 app.use(express.json());
 
-app.use(customLogger);
+app.use(customLoggerMiddleware);
 
 app.use('/users', userRouter);
 
@@ -25,6 +28,8 @@ app.use((err: any, req: Request, res: Response) => {
   }
   res.status(500).send(err);
 });
+
+app.use(winstonErrorLoggerMiddleware);
 
 const PORT = Number(process.env.PORT) || 3000;
 
