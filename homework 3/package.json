@@ -1,0 +1,42 @@
+{
+  "name": "nodejs_learn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p .",
+    "prestart": "npm run build",
+    "start": "node dst/app.js",
+    "task3js": "npm start && nodemon dst/app.js",
+    "task3ts": "nodemon src/app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daniiilponomarev/NodeJS_Learn.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daniiilponomarev/NodeJS_Learn/issues"
+  },
+  "homepage": "https://github.com/daniiilponomarev/NodeJS_Learn#readme",
+  "dependencies": {
+    "@hapi/joi": "17.1.1",
+    "express": "4.17.1",
+    "express-async-handler": "1.1.4",
+    "express-joi-validation": "4.0.4-beta.0",
+    "joi-extract-type": "15.0.8",
+    "pg": "8.3.0",
+    "pg-hstore": "2.3.3",
+    "sequelize": "6.3.4"
+  },
+  "devDependencies": {
+    "@types/express": "4.17.7",
+    "@types/node": "14.0.27",
+    "nodemon": "2.0.4",
+    "ts-node": "8.10.2",
+    "typescript": "3.9.7",
+    "@types/pg": "7.14.4",
+    "@types/sequelize": "4.28.9"
+  }
+}
