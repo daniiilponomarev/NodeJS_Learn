@@ -10,6 +10,7 @@ import {
   updateUserData,
 } from '../data-access/user/user-dal';
 import { getGroupDataById } from '../data-access/group/group-dal';
+import { ServiceError } from './service-errors';
 
 export const getUser = async (id: string): Promise<UserDomain | null> => {
   return getUserDataById(id);
@@ -21,7 +22,7 @@ export const createUser = async (
   const existedUser = await getUserDataByLogin(newUser.login);
 
   if (existedUser) {
-    throw Error('Duplicated login');
+    throw new ServiceError('Duplicated login');
   }
 
   const newUserWithId = {
@@ -39,12 +40,12 @@ export const updateUser = async (
   const userForUpdate = await getUserDataByLogin(login);
 
   if (!userForUpdate) {
-    throw Error('Undefined user');
+    throw new ServiceError('Undefined user');
   }
 
   const existedUser = await getUserDataByLogin(user.login);
   if (existedUser) {
-    throw Error('This login already exists');
+    throw new ServiceError('This login already exists');
   }
 
   const updatedUser = {
@@ -67,7 +68,7 @@ export const deleteUser = async (id: string): Promise<UserDomain | null> => {
   const userForDelete = await deleteUserData(id);
 
   if (!userForDelete) {
-    throw Error('Undefined user');
+    throw new ServiceError('Undefined user');
   }
 
   return userForDelete;
@@ -80,12 +81,12 @@ export const addUsersToGroup = async (
   const { rows, count } = await getUsersDataByIds(userIds);
 
   if (count !== userIds.length) {
-    throw Error('Some of users do not exist');
+    throw new ServiceError('Some of users do not exist');
   }
 
   const existedGroup = await getGroupDataById(groupId);
   if (!existedGroup) {
-    throw Error(`Group ${groupId} does not exists`);
+    throw new ServiceError(`Group ${groupId} does not exists`);
   }
 
   await addUsersToGroupData(groupId, userIds, existedGroup);

@@ -29,7 +29,7 @@ groupRouter.get(
     const groups = await getGroups(limit);
     const groupsDTO = groups.map((group) => GroupMapper.mapGroupToDTO(group));
 
-    res.json(groupsDTO);
+    return res.json(groupsDTO);
   })
 );
 
@@ -40,9 +40,9 @@ groupRouter.get(
       const group = await getGroup(req.params.id);
       const groupDTO = GroupMapper.mapGroupToDTO(group);
 
-      res.json(groupDTO);
+      return res.json(groupDTO);
     } catch (error) {
-      res.status(NOT_FOUND).json(error.toString());
+      res.status(NOT_FOUND).json(error);
     }
   })
 );
@@ -60,14 +60,14 @@ groupRouter.post(
         const createdGroup = await createGroup(newGroup);
         const groupDTO = GroupMapper.mapGroupToDTO(createdGroup);
 
-        res.json(groupDTO);
+        return res.json(groupDTO);
       } catch (error) {
         logger.error({
-          message: error.toString(),
+          message: error.errorMessage,
           method: 'createGroup',
           body: JSON.stringify(req.body),
         });
-        res.status(CONFLICT).json(error.toString());
+        res.status(CONFLICT).json(error);
       }
     }
   )
@@ -86,15 +86,15 @@ groupRouter.put(
         const updatedGroup = await updateGroup(req.params.name, group);
         const groupDTO = GroupMapper.mapGroupToDTO(updatedGroup);
 
-        res.json(groupDTO);
+        return res.json(groupDTO);
       } catch (error) {
         logger.error({
-          message: error.toString(),
+          message: error.errorMessage,
           method: 'updateGroup',
           params: JSON.stringify(req.params),
           body: JSON.stringify(req.body),
         });
-        res.status(CONFLICT).json(error.toString());
+        res.status(CONFLICT).json(error);
       }
     }
   )
@@ -107,14 +107,14 @@ groupRouter.delete(
       const group = await deleteGroup(req.params.id);
       const groupDTO = GroupMapper.mapGroupToDTO(group);
 
-      res.json(groupDTO);
+      return res.json(groupDTO);
     } catch (error) {
       logger.error({
-        message: error.toString(),
+        message: error.errorMessage,
         method: 'deleteGroup',
         params: JSON.stringify(req.params),
       });
-      res.status(NOT_FOUND).json(error.toString());
+      res.status(NOT_FOUND).json(error);
     }
   })
 );
