@@ -1,4 +1,4 @@
-import { UserDomain, UserTypeDTO } from '../models/user-model';
+import { UserDomain, UserTypeDTO } from '../../models/user-model';
 
 export class UserMapper {
   static mapUserToDTO(user?: UserDomain | null): UserTypeDTO | null {

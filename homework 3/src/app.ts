@@ -1,16 +1,22 @@
 import express, { Application, Request, Response } from 'express';
-import userRouter from './routers/user-router';
+import groupRouter from './routers/group/group-router';
+import userRouter from './routers/user/user-router';
 import { sequelize } from './data-access/connection';
-import { User } from './data-access/user-definition';
 import { init } from './init/init';
+import {
+  customLoggerMiddleware,
+  winstonErrorLoggerMiddleware,
+} from './logger/logger';
 
 const app: Application = express();
 
-const PORT = Number(process.env.PORT) || 3000;
-
 app.use(express.json());
 
+app.use(customLoggerMiddleware);
+
 app.use('/users', userRouter);
+
+app.use('/groups', groupRouter);
 
 app.use((err: any, req: Request, res: Response) => {
   if (err && err.error && err.error.isJoi) {
@@ -23,14 +29,14 @@ app.use((err: any, req: Request, res: Response) => {
   res.status(500).send(err);
 });
 
+app.use(winstonErrorLoggerMiddleware);
+
+const PORT = Number(process.env.PORT) || 3000;
+
 sequelize
   .authenticate()
   .then(async () => {
-    // await init(); // for first initialization
-    // await User.sync();
-    // User.findAll({ limit: 10 }).then((users) => {
-    //   console.log(users);
-    // });
+    await init(); // for first initialization
 
     app.listen(PORT, () =>
       console.log(

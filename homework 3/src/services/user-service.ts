@@ -1,15 +1,16 @@
+import { UserCreationRequestDTO, UserDomain } from '../models/user-model';
 import {
-  UserCreationRequestDTO,
-  UserDomain,
-} from '../models/user-model';
-import {
+  addUsersToGroupData,
   createUserData,
   deleteUserData,
   getAutoSuggestUsersData,
   getUserDataById,
   getUserDataByLogin,
+  getUsersDataByIds,
   updateUserData,
-} from '../data-access/user-dal';
+} from '../data-access/user/user-dal';
+import { getGroupDataById } from '../data-access/group/group-dal';
+import { ServiceError } from './service-errors';
 
 export const getUser = async (id: string): Promise<UserDomain | null> => {
   return getUserDataById(id);
@@ -21,7 +22,7 @@ export const createUser = async (
   const existedUser = await getUserDataByLogin(newUser.login);
 
   if (existedUser) {
-    throw Error('Duplicated login')
+    throw new ServiceError('Duplicated login');
   }
 
   const newUserWithId = {
@@ -39,12 +40,12 @@ export const updateUser = async (
   const userForUpdate = await getUserDataByLogin(login);
 
   if (!userForUpdate) {
-    throw Error('Undefined user');
+    throw new ServiceError('Undefined user');
   }
 
   const existedUser = await getUserDataByLogin(user.login);
   if (existedUser) {
-    throw Error('This login already exists');
+    throw new ServiceError('This login already exists');
   }
 
   const updatedUser = {
@@ -67,8 +68,26 @@ export const deleteUser = async (id: string): Promise<UserDomain | null> => {
   const userForDelete = await deleteUserData(id);
 
   if (!userForDelete) {
-    throw Error('Undefined user');
+    throw new ServiceError('Undefined user');
   }
 
   return userForDelete;
+};
+
+export const addUsersToGroup = async (
+  groupId: string,
+  userIds: string[]
+): Promise<any> => {
+  const { rows, count } = await getUsersDataByIds(userIds);
+
+  if (count !== userIds.length) {
+    throw new ServiceError('Some of users do not exist');
+  }
+
+  const existedGroup = await getGroupDataById(groupId);
+  if (!existedGroup) {
+    throw new ServiceError(`Group ${groupId} does not exists`);
+  }
+
+  await addUsersToGroupData(groupId, userIds, existedGroup);
 };
