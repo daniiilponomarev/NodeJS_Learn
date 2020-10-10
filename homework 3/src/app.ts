@@ -1,12 +1,15 @@
 import express, { Application, Request, Response } from 'express';
-import groupRouter from './routers/group/group-router';
+import loginRouter from './routers/login/login-router';
 import userRouter from './routers/user/user-router';
+import groupRouter from './routers/group/group-router';
 import { sequelize } from './data-access/connection';
 import { init } from './init/init';
 import {
   customLoggerMiddleware,
   winstonErrorLoggerMiddleware,
 } from './logger/logger';
+import { PORT as APP_PORT } from './configs/config';
+import { checkAccessToken } from './routers/login/tokens';
 
 const app: Application = express();
 
@@ -14,9 +17,11 @@ app.use(express.json());
 
 app.use(customLoggerMiddleware);
 
-app.use('/users', userRouter);
+app.use('', loginRouter);
 
-app.use('/groups', groupRouter);
+app.use('/users', checkAccessToken, userRouter);
+
+app.use('/groups', checkAccessToken, groupRouter);
 
 app.use((err: any, req: Request, res: Response) => {
   if (err && err.error && err.error.isJoi) {
@@ -31,7 +36,7 @@ app.use((err: any, req: Request, res: Response) => {
 
 app.use(winstonErrorLoggerMiddleware);
 
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = Number(process.env.PORT) || APP_PORT;
 
 sequelize
   .authenticate()

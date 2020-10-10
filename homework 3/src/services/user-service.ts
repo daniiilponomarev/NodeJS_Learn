@@ -1,9 +1,14 @@
-import { UserCreationRequestDTO, UserDomain } from '../models/user-model';
+import {
+  UserCreationRequestDTO,
+  UserDomain,
+  UserLoginRequestDTO,
+} from '../models/user-model';
 import {
   addUsersToGroupData,
   createUserData,
   deleteUserData,
   getAutoSuggestUsersData,
+  getUserDataByCreds,
   getUserDataById,
   getUserDataByLogin,
   getUsersDataByIds,
@@ -14,6 +19,18 @@ import { ServiceError } from './service-errors';
 
 export const getUser = async (id: string): Promise<UserDomain | null> => {
   return getUserDataById(id);
+};
+
+export const getUserByCreds = async (
+  creds: UserLoginRequestDTO
+): Promise<UserDomain | null> => {
+  const user = await getUserDataByCreds(creds);
+
+  if (!user) {
+    throw new ServiceError('Incorrect login or password');
+  }
+
+  return user;
 };
 
 export const createUser = async (

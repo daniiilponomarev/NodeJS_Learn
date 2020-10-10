@@ -26,6 +26,7 @@
     "express-async-handler": "1.1.4",
     "express-joi-validation": "4.0.4-beta.0",
     "joi-extract-type": "15.0.8",
+    "jsonwebtoken": "^8.5.1",
     "pg": "8.3.0",
     "pg-hstore": "2.3.3",
     "sequelize": "6.3.4",
@@ -37,6 +38,7 @@
     "nodemon": "2.0.4",
     "ts-node": "8.10.2",
     "typescript": "3.9.7",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/pg": "7.14.4",
     "@types/sequelize": "4.28.9"
   }

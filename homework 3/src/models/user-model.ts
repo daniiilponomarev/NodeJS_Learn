@@ -14,10 +14,20 @@ export type UserTypeDTO = {
   age: number;
 };
 
+export type UserAuthTypeDTO = {
+  id: string;
+  login: string;
+};
+
 export type UserCreationRequestDTO = {
   login: string;
   password: string;
   age: number;
+};
+
+export type UserLoginRequestDTO = {
+  login: string;
+  password: string;
 };
 
 export type UsersAddToGroupRequestDTO = {
