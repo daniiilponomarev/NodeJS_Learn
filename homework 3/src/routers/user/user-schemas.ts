@@ -17,3 +17,11 @@ export const userCreateUpdateSchema = Joi.object({
 export interface userCreateUpdateRequestSchema extends ValidatedRequestSchema {
   [ContainerTypes.Body]: Joi.extractType<typeof userCreateUpdateSchema>;
 }
+
+export const usersAddToGroupSchema = Joi.object({
+  userIds: Joi.array().items(Joi.string()).required(),
+});
+
+export interface usersAddToGroupRequestSchema extends ValidatedRequestSchema {
+  [ContainerTypes.Body]: Joi.extractType<typeof usersAddToGroupSchema>;
+}
