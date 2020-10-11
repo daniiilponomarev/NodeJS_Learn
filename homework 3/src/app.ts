@@ -1,4 +1,5 @@
 import express, { Application, Request, Response } from 'express';
+import cors from 'cors';
 import loginRouter from './routers/login/login-router';
 import userRouter from './routers/user/user-router';
 import groupRouter from './routers/group/group-router';
@@ -16,6 +17,8 @@ const app: Application = express();
 app.use(express.json());
 
 app.use(customLoggerMiddleware);
+
+app.use(cors());
 
 app.use('', loginRouter);
 
