@@ -7,33 +7,27 @@ export const customLoggerMiddleware = (
   next: () => void
 ) => {
   const currentDateTime = new Date();
+  const startDateTime = currentDateTime.getTime();
   const formatted_date = `${currentDateTime.getFullYear()}-${
     currentDateTime.getMonth() + 1
   }-${currentDateTime.getDate()} ${currentDateTime.getHours()}:${currentDateTime.getMinutes()}:${currentDateTime.getSeconds()}`;
 
   const [oldWrite, oldEnd] = [res.write, res.end];
-  const chunks: Buffer[] = [];
 
   (res.write as unknown) = function (chunk: any) {
-    chunks.push(Buffer.from(chunk));
     (oldWrite as Function).apply(res, arguments);
   };
 
-  res.end = function (chunk: any) {
-    if (chunk) {
-      chunks.push(Buffer.from(chunk));
-    }
-    const body = Buffer.concat(chunks).toString('utf8');
+  res.once('finish', () => {
+    const endDateTime = new Date().getTime();
+    const time = endDateTime - startDateTime;
 
     const log = `[${formatted_date}] ${req.method}:${req.url}
-request body: ${JSON.stringify(req.body)}
 response status: ${res.statusCode}
-response body: ${body}`;
+time: ${time}ms`;
 
     console.log(log);
-
-    (oldEnd as Function).apply(res, arguments);
-  };
+  });
 
   if (next) {
     next();

@@ -10,7 +10,7 @@ import {
   winstonErrorLoggerMiddleware,
 } from './logger/logger';
 import { PORT as APP_PORT } from './configs/config';
-import { checkAccessToken } from './routers/login/tokens';
+import { checkAccessTokenMiddleware } from './routers/login/tokens';
 
 const app: Application = express();
 
@@ -22,10 +22,13 @@ app.use(cors());
 
 app.use('', loginRouter);
 
-app.use('/users', checkAccessToken, userRouter);
+app.use('', checkAccessTokenMiddleware);
 
-app.use('/groups', checkAccessToken, groupRouter);
+app.use('/users', userRouter);
 
+app.use('/groups', groupRouter);
+
+// TODO: Вынести
 app.use((err: any, req: Request, res: Response) => {
   if (err && err.error && err.error.isJoi) {
     // return json response with status 400 if there is a joi error,
@@ -39,7 +42,7 @@ app.use((err: any, req: Request, res: Response) => {
 
 app.use(winstonErrorLoggerMiddleware);
 
-const PORT = Number(process.env.PORT) || APP_PORT;
+const PORT = (process.env.PORT && parseInt(process.env.PORT)) || APP_PORT;
 
 sequelize
   .authenticate()

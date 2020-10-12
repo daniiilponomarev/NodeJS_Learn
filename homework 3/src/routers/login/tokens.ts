@@ -25,7 +25,7 @@ export const generateRefreshToken = (payload: UserTokenPayload) => {
   });
 };
 
-export const checkAccessToken = (
+export const checkAccessTokenMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -33,11 +33,12 @@ export const checkAccessToken = (
   const token: any = req.headers[AUTH_HEADER];
 
   if (token) {
-    jwt.verify(token, SECRET, (err: VerifyErrors | null) => {
+    jwt.verify(token, SECRET, (err: VerifyErrors | null, payload: any) => {
       if (err) {
         const error = new ServiceError('Failed to authenticate token');
         res.status(FORBIDDEN).json(error);
       } else {
+        req.body.authLogin = payload?.login;
         next();
       }
     });
