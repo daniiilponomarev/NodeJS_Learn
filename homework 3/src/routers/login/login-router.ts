@@ -7,7 +7,7 @@ import { UserLoginRequestDTO } from '../../models/user-model';
 import { getUserByCreds } from '../../services/user-service';
 import { LoginMapper } from './login-mapper';
 import { CONFLICT, OK } from '../../constants/statuses';
-import { logger } from '../../logger/logger';
+import { logger } from '../../utils/logger';
 import {
   checkRefreshToken,
   generateAccessToken,

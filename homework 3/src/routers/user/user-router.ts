@@ -22,7 +22,7 @@ import {
 } from '../../services/user-service';
 import { UserMapper } from './user-mapper';
 import { CONFLICT, NOT_FOUND, OK } from '../../constants/statuses';
-import { logger } from '../../logger/logger';
+import { logger } from '../../utils/logger';
 
 const userRouter: Router = express.Router();
 const validator = createValidator();

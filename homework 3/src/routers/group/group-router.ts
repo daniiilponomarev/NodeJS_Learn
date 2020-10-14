@@ -16,7 +16,7 @@ import {
 import { GroupMapper } from './group-mapper';
 import { GroupCreationRequestDTO } from '../../models/group-model';
 import { CONFLICT, NOT_FOUND } from '../../constants/statuses';
-import { logger } from '../../logger/logger';
+import { logger } from '../../utils/logger';
 
 const groupRouter: Router = express.Router();
 const validator = createValidator();
