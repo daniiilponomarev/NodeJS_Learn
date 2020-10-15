@@ -18,5 +18,8 @@
   "homepage": "https://github.com/daniiilponomarev/NodeJS_Learn#readme",
   "devDependencies": {
     "prettier": "^2.0.5"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
   }
 }
