@@ -6,16 +6,14 @@ import {
 } from '../../models/group-model';
 import { Group } from './group-definition';
 
-export const getGroupsData = async (
-  limit: any = 10
-): Promise<GroupDomain[]> => {
+const getGroupsData = async (limit: any = 10): Promise<GroupDomain[]> => {
   return Group.findAll({
     limit: limit,
     order: [['name', 'ASC']],
   });
 };
 
-export const getGroupDataByName = async (
+const getGroupDataByName = async (
   name: string
 ): Promise<GroupDomain | null> => {
   return Group.findOne({
@@ -27,9 +25,7 @@ export const getGroupDataByName = async (
   });
 };
 
-export const getGroupDataById = async (
-  id: string
-): Promise<GroupDomain | null> => {
+const getGroupDataById = async (id: string): Promise<GroupDomain | null> => {
   return Group.findOne({
     where: {
       id: {
@@ -39,25 +35,34 @@ export const getGroupDataById = async (
   });
 };
 
-export const createGroupData = async (
+const createGroupData = async (
   newGroup: GroupCreationRequestDTO
 ): Promise<GroupDomain> => {
   return Group.create(newGroup);
 };
 
-export const updateGroupData = async (
+const updateGroupData = async (
   GroupForUpdate: GroupDomain,
   updatedGroup: GroupType
 ): Promise<GroupDomain> => {
   return GroupForUpdate.update(updatedGroup);
 };
 
-export const deleteGroupData = async (
-  id: string
-): Promise<GroupDomain | null> => {
+const deleteGroupData = async (id: string): Promise<GroupDomain | null> => {
   const existedGroup = await getGroupDataById(id);
 
   await existedGroup?.destroy();
 
   return existedGroup;
 };
+
+const groupDal = {
+  createGroupData,
+  deleteGroupData,
+  getGroupsData,
+  getGroupDataById,
+  getGroupDataByName,
+  updateGroupData,
+};
+
+export default groupDal;

@@ -1,20 +1,13 @@
-import { GroupCreationRequestDTO, GroupDomain } from '../models/group-model';
-import {
-  createGroupData,
-  deleteGroupData,
-  getGroupsData,
-  getGroupDataById,
-  getGroupDataByName,
-  updateGroupData,
-} from '../data-access/group/group-dal';
-import {ServiceError} from "./service-errors";
+import { GroupCreationRequestDTO, GroupDomain } from '../../models/group-model';
+import groupDal from '../../data-access/group/group-dal';
+import {ServiceError} from "../service-errors";
 
 export const getGroups = async (limit: any = 10): Promise<GroupDomain[]> => {
-  return getGroupsData(limit);
+  return groupDal.getGroupsData(limit);
 };
 
 export const getGroup = async (id: string): Promise<GroupDomain | null> => {
-  const existedGroup = await getGroupDataById(id);
+  const existedGroup = await groupDal.getGroupDataById(id);
 
   if (!existedGroup) {
     throw new ServiceError(`No group with id=${id}`);
@@ -25,26 +18,26 @@ export const getGroup = async (id: string): Promise<GroupDomain | null> => {
 export const createGroup = async (
   newGroup: GroupCreationRequestDTO
 ): Promise<GroupDomain> => {
-  const existedGroup = await getGroupDataByName(newGroup.name);
+  const existedGroup = await groupDal.getGroupDataByName(newGroup.name);
 
   if (existedGroup) {
     throw new ServiceError('Duplicated name');
   }
 
-  return createGroupData(newGroup);
+  return groupDal.createGroupData(newGroup);
 };
 
 export const updateGroup = async (
   name: string,
   group: GroupCreationRequestDTO
 ): Promise<GroupDomain> => {
-  const groupForUpdate = await getGroupDataByName(name);
+  const groupForUpdate = await groupDal.getGroupDataByName(name);
 
   if (!groupForUpdate) {
     throw new ServiceError('Undefined group');
   }
 
-  const existedGroup = await getGroupDataByName(group.name);
+  const existedGroup = await groupDal.getGroupDataByName(group.name);
   if (existedGroup) {
     throw new ServiceError('This name already exists');
   }
@@ -54,11 +47,11 @@ export const updateGroup = async (
     ...group,
   };
 
-  return updateGroupData(groupForUpdate, updatedGroup);
+  return groupDal.updateGroupData(groupForUpdate, updatedGroup);
 };
 
 export const deleteGroup = async (id: string): Promise<GroupDomain | null> => {
-  const groupForDelete = await deleteGroupData(id);
+  const groupForDelete = await groupDal.deleteGroupData(id);
 
   if (!groupForDelete) {
     throw new ServiceError('Undefined group');

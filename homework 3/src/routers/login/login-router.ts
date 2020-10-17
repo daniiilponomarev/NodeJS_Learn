@@ -4,7 +4,7 @@ import 'joi-extract-type';
 import asyncHandler from 'express-async-handler';
 import { userLoginSchema, usersLoginRequestSchema } from './login-schemas';
 import { UserLoginRequestDTO } from '../../models/user-model';
-import { getUserByCreds } from '../../services/user-service';
+import { getUserByCreds } from '../../services/user/user-service';
 import { LoginMapper } from './login-mapper';
 import { CONFLICT, OK } from '../../constants/statuses';
 import { logger } from '../../utils/logger';
