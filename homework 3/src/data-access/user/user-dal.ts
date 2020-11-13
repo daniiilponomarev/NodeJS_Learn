@@ -4,6 +4,7 @@ import { sequelize } from '../connection';
 import {
   UserCreationRequestDTO,
   UserDomain,
+  UserLoginRequestDTO,
   UserType,
 } from '../../models/user-model';
 import { User } from './user-definition';
@@ -35,6 +36,22 @@ export const getUserDataById = async (
       isDeleted: false,
     },
     // raw: true,
+  });
+};
+
+export const getUserDataByCreds = async (
+  creds: UserLoginRequestDTO
+): Promise<UserDomain | null> => {
+  return User.findOne({
+    where: {
+      login: {
+        [Op.eq]: creds.login,
+      },
+      password: {
+        [Op.eq]: creds.password,
+      },
+      isDeleted: false,
+    },
   });
 };
 
