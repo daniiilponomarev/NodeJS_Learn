@@ -19,7 +19,7 @@ import {
   getAutoSuggestUsers,
   getUser,
   updateUser,
-} from '../../services/user-service';
+} from '../../services/user/user-service';
 import { UserMapper } from './user-mapper';
 import { CONFLICT, NOT_FOUND, OK } from '../../constants/statuses';
 import { logger } from '../../utils/logger';

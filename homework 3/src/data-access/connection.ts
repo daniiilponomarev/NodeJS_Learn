@@ -1,7 +1,6 @@
 import { Sequelize } from 'sequelize';
 
-const DB_CONNECTION_URI =
-  'postgres://syxisznz:H-3ENhFKqxs3CpwkndGDaDW1h9kWOzMS@packy.db.elephantsql.com:5432/syxisznz';
+const DB_CONNECTION_URI = process.env.DB_CONNECTION_URI || '';
 
 export const sequelize = new Sequelize(DB_CONNECTION_URI, {
   host: 'packy.db.elephantsql.com',

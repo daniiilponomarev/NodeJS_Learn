@@ -12,7 +12,7 @@ import {
   getGroups,
   getGroup,
   updateGroup,
-} from '../../services/group-service';
+} from '../../services/group/group-service';
 import { GroupMapper } from './group-mapper';
 import { GroupCreationRequestDTO } from '../../models/group-model';
 import { CONFLICT, NOT_FOUND } from '../../constants/statuses';

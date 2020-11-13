@@ -11,7 +11,7 @@ import { User } from './user-definition';
 import { UserGroup } from '../user-group/user-group-definition';
 import { GroupDomain } from '../../models/group-model';
 
-export const getUserDataByLogin = async (
+const getUserDataByLogin = async (
   login: string
 ): Promise<UserDomain | null> => {
   return User.findOne({
@@ -25,9 +25,7 @@ export const getUserDataByLogin = async (
   });
 };
 
-export const getUserDataById = async (
-  id: string
-): Promise<UserDomain | null> => {
+const getUserDataById = async (id: string): Promise<UserDomain | null> => {
   return User.findOne({
     where: {
       id: {
@@ -39,7 +37,7 @@ export const getUserDataById = async (
   });
 };
 
-export const getUserDataByCreds = async (
+const getUserDataByCreds = async (
   creds: UserLoginRequestDTO
 ): Promise<UserDomain | null> => {
   return User.findOne({
@@ -55,7 +53,7 @@ export const getUserDataByCreds = async (
   });
 };
 
-export const getUsersDataByIds = async (
+const getUsersDataByIds = async (
   ids: string[]
 ): Promise<{ rows: UserDomain[]; count: number }> => {
   return User.findAndCountAll({
@@ -68,20 +66,20 @@ export const getUsersDataByIds = async (
   });
 };
 
-export const createUserData = async (
+const createUserData = async (
   newUser: UserCreationRequestDTO
 ): Promise<UserDomain> => {
   return User.create(newUser);
 };
 
-export const updateUserData = async (
+const updateUserData = async (
   userForUpdate: UserDomain,
   updatedUser: UserType
 ): Promise<UserDomain> => {
   return userForUpdate.update(updatedUser);
 };
 
-export const getAutoSuggestUsersData = async (
+const getAutoSuggestUsersData = async (
   loginSubstring: any = '',
   limit: any = 10
 ): Promise<UserDomain[]> => {
@@ -98,9 +96,7 @@ export const getAutoSuggestUsersData = async (
   });
 };
 
-export const deleteUserData = async (
-  id: string
-): Promise<UserDomain | null> => {
+const deleteUserData = async (id: string): Promise<UserDomain | null> => {
   const user: UserDomain | null = await User.findOne({
     where: {
       id: {
@@ -115,7 +111,7 @@ export const deleteUserData = async (
   return user;
 };
 
-export const addUsersToGroupData = async (
+const addUsersToGroupData = async (
   groupId: string,
   userIds: string[],
   group: GroupDomain
@@ -129,3 +125,17 @@ export const addUsersToGroupData = async (
     await UserGroup.bulkCreate(newData);
   });
 };
+
+const userDal = {
+  addUsersToGroupData,
+  createUserData,
+  deleteUserData,
+  getAutoSuggestUsersData,
+  getUserDataByCreds,
+  getUserDataById,
+  getUserDataByLogin,
+  getUsersDataByIds,
+  updateUserData,
+};
+
+export default userDal;
